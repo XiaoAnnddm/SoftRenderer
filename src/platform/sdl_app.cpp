@@ -25,7 +25,6 @@ bool SdlApp::init(const char *title, int w, int h) {
     return false;
   }
 
-  m_running = true;
   return true;
 }
 void SdlApp::shutdown() {
@@ -40,22 +39,6 @@ void SdlApp::shutdown() {
 
   SDL_Quit();
 }
-
-// bool SdlApp::poll_events() {
-//   SDL_Event e;
-//   while (SDL_PollEvent(&e)) {
-//     ui::process_event(e);
-//     if (e.type == SDL_QUIT) {
-//       m_running = false;
-//     }
-//     if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE)
-//     {
-//       m_running = false;
-//     }
-//   }
-//
-//   return m_running;
-// }
 
 void SdlApp::begin_frame() {
   SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);

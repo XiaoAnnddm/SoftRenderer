@@ -8,7 +8,6 @@ public:
   bool init(const char *title, int w, int h);
   void shutdown();
 
-  // bool poll_events(); // is quit? false->quit
   void begin_frame(); // clear
   void end_frame();   // present
 
@@ -20,6 +19,5 @@ public:
 private:
   SDL_Window *m_window = nullptr;
   SDL_Renderer *m_renderer = nullptr;
-  // bool m_running = true;
 };
 } // namespace platform

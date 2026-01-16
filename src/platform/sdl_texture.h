@@ -1,7 +1,8 @@
 #pragma once
 
+#include "../types.h"
+
 #include <SDL2/SDL.h>
-#include <cstdint>
 #include <vector>
 
 namespace platform {
@@ -11,7 +12,7 @@ public:
 
   void destroy();
 
-  void update(const std::vector<uint32_t> &data);
+  void update(const std::vector<Color> &data);
 
   // for ImGui use
   SDL_Texture *texture() const { return m_texture; }

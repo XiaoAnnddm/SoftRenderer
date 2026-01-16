@@ -25,7 +25,7 @@ void Sdl_Texture::destroy() {
   m_height = 0;
 }
 
-void Sdl_Texture::update(const std::vector<uint32_t> &data) {
+void Sdl_Texture::update(const std::vector<Color> &data) {
   if (!m_texture) {
     return;
   }

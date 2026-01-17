@@ -1,4 +1,6 @@
+#include "SDL_scancode.h"
 #include "core/rasterizer.h"
+#include "platform/input.h"
 #include "platform/sdl_app.h"
 #include "platform/sdl_texture.h"
 #include "sdl_texture.h"
@@ -6,6 +8,9 @@
 
 #include <SDL2/SDL.h>
 
+#include <iostream>
+
+// use for BGRA - SDL format
 constexpr Color make_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
   return (a << 24) | (r << 16) | (g << 8) | b;
 }
@@ -29,6 +34,8 @@ int main() {
     return 1;
   }
 
+  platform::Input input;
+
   bool running = true;
   while (running) {
     // event
@@ -36,6 +43,8 @@ int main() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
       ui::process_event(e);
+      input.process_event(e);
+
       if (e.type == SDL_QUIT) {
         running = false;
       }
@@ -43,6 +52,14 @@ int main() {
           e.window.event == SDL_WINDOWEVENT_CLOSE) {
         running = false;
       }
+    }
+
+    if (input.is_key_down(SDL_SCANCODE_W)) {
+      std::cout << "W pressed\n";
+    }
+    if (input.is_mouse_button_down(SDL_BUTTON_RIGHT)) {
+      std::cout << "Right mouse: dx=" << input.mouse_delta_x()
+                << " dy=" << input.mouse_delta_y() << '\n';
     }
 
     rasterizer.clear();

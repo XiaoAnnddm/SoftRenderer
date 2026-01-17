@@ -44,6 +44,8 @@ target_include_directories(core PUBLIC
 add_library(platform STATIC
 	${CMAKE_SOURCE_DIR}/src/platform/sdl_app.cpp
 	${CMAKE_SOURCE_DIR}/src/platform/sdl_texture.cpp
+	${CMAKE_SOURCE_DIR}/src/platform/input.cpp
+
 )
 target_include_directories(platform PUBLIC
 	${CMAKE_SOURCE_DIR}/src/platform

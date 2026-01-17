@@ -3,7 +3,6 @@
 #include "platform/input.h"
 #include "platform/sdl_app.h"
 #include "platform/sdl_texture.h"
-#include "sdl_texture.h"
 #include "ui/ui_layer.h"
 
 #include <SDL2/SDL.h>
@@ -40,6 +39,8 @@ int main() {
   while (running) {
     // event
     // running = app.poll_events();
+    input.begin_frame();
+
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
       ui::process_event(e);

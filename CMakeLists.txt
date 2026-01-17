@@ -34,6 +34,7 @@ target_compile_options(imgui PRIVATE ${SDL2_CFLAGS_OTHER})
 # core library -----------------------------------------------
 add_library(core STATIC
 	${CMAKE_SOURCE_DIR}/src/core/rasterizer.cpp
+	${CMAKE_SOURCE_DIR}/src/core/math_utils.cpp
 )
 target_include_directories(core PUBLIC
 	${CMAKE_SOURCE_DIR}/src/core

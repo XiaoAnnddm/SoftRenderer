@@ -16,9 +16,11 @@ public:
   float signed_triangle_area(const Vec3 &a, const Vec3 &b, const Vec3 &c);
 
   std::vector<Color> &frame_buffer() { return frame_buf; }
+  std::vector<float> &depth_buffer() { return depth_buf; }
 
 private:
   std::vector<Color> frame_buf;
+  std::vector<float> depth_buf;
   int w_ = 0;
   int h_ = 0;
 

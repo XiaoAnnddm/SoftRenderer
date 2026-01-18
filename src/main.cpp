@@ -31,9 +31,12 @@ int main() {
   rasterizer.Init(fb_width, fb_height);
 
   core::Renderer renderer(&rasterizer, fb_width, fb_height);
-  Vec3 cube_vs[8] = {Vec3(-1, -1, -1), Vec3(1, -1, -1), Vec3(1, 1, -1),
-                     Vec3(-1, 1, -1),  Vec3(-1, -1, 1), Vec3(1, -1, 1),
-                     Vec3(1, 1, 1),    Vec3(-1, -1, 1)};
+  Vec3 cube_vs[8] = {
+      // -z
+      Vec3(-1, 1, -1), Vec3(1, 1, -1), Vec3(1, -1, -1), Vec3(-1, -1, -1),
+      // +z
+      Vec3(-1, 1, 1), Vec3(1, 1, 1), Vec3(1, -1, 1), Vec3(-1, -1, 1)};
+
   struct Triangle {
     int va, vb, vc;
     Color color;

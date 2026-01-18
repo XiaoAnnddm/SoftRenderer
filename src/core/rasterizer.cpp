@@ -8,6 +8,7 @@ void Rasterizer::Init(int width, int height) {
   w_ = width;
   h_ = height;
   frame_buf.resize(width * height);
+  depth_buf.resize(width * height);
 }
 void Rasterizer::clear() {
   if (!valid()) {
@@ -15,6 +16,7 @@ void Rasterizer::clear() {
   }
 
   std::fill(frame_buf.begin(), frame_buf.end(), 0);
+  std::fill(depth_buf.begin(), depth_buf.end(), 1.f);
 }
 
 void Rasterizer::put_pixel(int x, int y, Color color) {
@@ -70,13 +72,22 @@ void Rasterizer::draw_filled_triangle(const Vec3 &pa, const Vec3 &pb,
   max_y = std::min(max_y, h_ - 1);
 
   float area = signed_triangle_area(pa, pb, pc);
+  if (std::abs(area) < 1e-6f) {
+    return;
+  }
   for (int y = min_y; y <= max_y; ++y) {
     for (int x = min_x; x <= max_x; ++x) {
-      float a = signed_triangle_area({x, y, 0}, pb, pc) / area;
-      float b = signed_triangle_area({x, y, 0}, pc, pa) / area;
-      float c = signed_triangle_area({x, y, 0}, pa, pb) / area;
-      if (a >= 0 && b >= 0 && c >= 0) {
-        put_pixel(x, y, color);
+      float alpha = signed_triangle_area({x, y, 0}, pb, pc) / area;
+      float beta = signed_triangle_area({x, y, 0}, pc, pa) / area;
+      float gama = signed_triangle_area({x, y, 0}, pa, pb) / area;
+      if (alpha >= 0 && beta >= 0 && gama >= 0) {
+        float depth = alpha * pa.z + beta * pb.z + gama * pc.z;
+
+        int idx = y * w_ + x;
+        if (depth < depth_buf[idx]) {
+          frame_buf[idx] = color;
+          depth_buf[idx] = depth;
+        }
       }
     }
   }

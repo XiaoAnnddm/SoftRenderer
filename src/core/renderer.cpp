@@ -41,7 +41,7 @@ Vec3 Renderer::perspective_divide(const Vec4 &clip_pos) const {
 }
 Vec3 Renderer::viewport_transform(const Vec3 &ndc) const {
   float x = (ndc.x + 1.f) * 0.5f * m_viewport_width;
-  float y = (ndc.y + 1.f) * 0.5f * m_viewport_height;
+  float y = (1 - ndc.y) * 0.5f * m_viewport_height;
   float z = ndc.z;
 
   return Vec3(x, y, z);

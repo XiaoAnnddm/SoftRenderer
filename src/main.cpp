@@ -1,4 +1,5 @@
 #include "SDL_scancode.h"
+#include "core/camera.h"
 #include "core/rasterizer.h"
 #include "platform/input.h"
 #include "platform/sdl_app.h"
@@ -35,10 +36,11 @@ int main() {
 
   platform::Input input;
 
+  core::Camera camera(Vec3(0, 0, 3), Vec3(0, 0, 0), Vec3(0, 1, 0));
+  camera.set_perspective(45.f, (float)fb_width / fb_height, 0.1f, 100.f);
+
   bool running = true;
   while (running) {
-    // event
-    // running = app.poll_events();
     input.begin_frame();
 
     SDL_Event e;
@@ -56,12 +58,44 @@ int main() {
     }
 
     if (ui::is_mouse_in_render_area()) {
+      const float move_speed = 0.05f;
+      const float rotate_speed = 0.2f;
+
+      // forward - backward
       if (input.is_key_down(SDL_SCANCODE_W)) {
         std::cout << "W pressed\n";
+        camera.move_forward(move_speed);
+      }
+      if (input.is_key_down(SDL_SCANCODE_S)) {
+        std::cout << "S pressed\n";
+        camera.move_forward(-move_speed);
+      }
+
+      // left - right
+      if (input.is_key_down(SDL_SCANCODE_A)) {
+        std::cout << "A pressed\n";
+        camera.move_right(-move_speed);
+      }
+      if (input.is_key_down(SDL_SCANCODE_D)) {
+        std::cout << "D pressed\n";
+        camera.move_right(move_speed);
+      }
+
+      // up - down
+      if (input.is_key_down(SDL_SCANCODE_SPACE)) {
+        std::cout << "SPACE pressed\n";
+        camera.move_up(move_speed);
+      }
+      if (input.is_key_down(SDL_SCANCODE_LSHIFT)) {
+        std::cout << "LSHIFT pressed\n";
+        camera.move_up(-move_speed);
       }
       if (input.is_mouse_button_down(SDL_BUTTON_RIGHT)) {
         std::cout << "Right mouse: dx=" << input.mouse_delta_x()
                   << " dy=" << input.mouse_delta_y() << '\n';
+        float pitch_delta = -input.mouse_delta_y() * rotate_speed;
+        float yaw_delta = input.mouse_delta_x() * rotate_speed;
+        camera.rotate(pitch_delta, yaw_delta);
       }
     }
 

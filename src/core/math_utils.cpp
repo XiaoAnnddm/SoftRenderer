@@ -104,7 +104,8 @@ mat4 look_at(const Vec3 &eye, const Vec3 &target, const Vec3 &up) {
 // aspect => rate of width and height
 mat4 perspective(float fov, float aspect, float near, float far) {
   // top
-  float tan_half_fov = tan(fov / 2.f);
+  float f = radians(fov);
+  float tan_half_fov = tan(f / 2.f);
 
   mat4 result(0.0f);
 

@@ -51,7 +51,7 @@ void Camera::update_vectors() {
 
 void Camera::reset() {
   m_position = m_initial_position;
-  m_forward = glm::normalize(m_initial_position - m_initial_target);
+  m_forward = glm::normalize(m_initial_target - m_initial_position);
   m_right = glm::normalize(glm::cross(m_forward, m_initial_up));
   m_up = glm::normalize(glm::cross(m_right, m_forward));
 

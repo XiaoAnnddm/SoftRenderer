@@ -4,7 +4,8 @@
 
 namespace core {
 Camera::Camera(const Vec3 &position, const Vec3 &target, const Vec3 &up)
-    : m_position(position) {
+    : m_position(position), m_initial_position(position),
+      m_initial_target(target), m_initial_up(up) {
   m_forward = glm::normalize(target - position);
   m_right = glm::normalize(glm::cross(m_forward, up));
   m_up = glm::normalize(glm::cross(m_right, m_forward));
@@ -46,6 +47,16 @@ void Camera::update_vectors() {
 
   m_right = glm::normalize(glm::cross(m_forward, Vec3(0, 1, 0)));
   m_up = glm::normalize(glm::cross(m_right, m_forward));
+}
+
+void Camera::reset() {
+  m_position = m_initial_position;
+  m_forward = glm::normalize(m_initial_position - m_initial_target);
+  m_right = glm::normalize(glm::cross(m_forward, m_initial_up));
+  m_up = glm::normalize(glm::cross(m_right, m_forward));
+
+  m_pitch = math::degrees(asin(m_forward.y));
+  m_yaw = math::degrees(atan2(m_forward.z, m_forward.x));
 }
 
 mat4 Camera::view_matrix() const {

@@ -31,6 +31,9 @@ public:
   void set_projection_type(ProjectionType type) { m_projection_type = type; }
   ProjectionType projection_type() const { return m_projection_type; }
 
+  void reset();
+  void set_fov(float fov) { m_fov = fov; }
+
   const Vec3 &postion() const { return m_position; }
   const Vec3 &forward() const { return m_forward; }
   const Vec3 &right() const { return m_right; }
@@ -66,5 +69,9 @@ private:
   float m_ortho_top = 10.f;
   float m_ortho_near = 10.f;
   float m_ortho_far = 100.f;
+
+  Vec3 m_initial_position;
+  Vec3 m_initial_target;
+  Vec3 m_initial_up;
 };
 } // namespace core

@@ -84,9 +84,14 @@ void Rasterizer::draw_filled_triangle(const Vec3 &pa, const Vec3 &pb,
         float depth = alpha * pa.z + beta * pb.z + gama * pc.z;
 
         int idx = y * w_ + x;
-        if (depth < depth_buf[idx]) {
+
+        if (m_depth_test_enabled) {
+          if (depth < depth_buf[idx]) {
+            frame_buf[idx] = color;
+            depth_buf[idx] = depth;
+          }
+        } else {
           frame_buf[idx] = color;
-          depth_buf[idx] = depth;
         }
       }
     }

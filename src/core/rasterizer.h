@@ -18,11 +18,15 @@ public:
   std::vector<Color> &frame_buffer() { return frame_buf; }
   std::vector<float> &depth_buffer() { return depth_buf; }
 
+  void set_depth_test_enabled(bool enabled) { m_depth_test_enabled = enabled; }
+  bool is_depth_test_enabled() const { return m_depth_test_enabled; }
+
 private:
   std::vector<Color> frame_buf;
   std::vector<float> depth_buf;
   int w_ = 0;
   int h_ = 0;
+  bool m_depth_test_enabled = true;
 
   bool valid() const { return w_ > 0 && h_ > 0; }
 };

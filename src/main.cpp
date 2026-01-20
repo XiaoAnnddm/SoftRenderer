@@ -36,32 +36,8 @@ int main() {
 
   core::Renderer renderer(&rasterizer, fb_width, fb_height);
 
-  core::Mesh cube_mesh = core::Mesh::create_cube();
-  cube_mesh.triangle_colors = {
-      // (-z) red
-      make_color(255, 0, 0),
-      make_color(255, 0, 0),
-
-      // (+z) green
-      make_color(0, 255, 0),
-      make_color(0, 255, 0),
-
-      // (-x) blue
-      make_color(0, 0, 255),
-      make_color(0, 0, 255),
-
-      // (+x) yellow
-      make_color(255, 255, 0),
-      make_color(255, 255, 0),
-
-      // (-y) qing
-      make_color(0, 255, 255),
-      make_color(0, 255, 255),
-
-      // (+y) yang_hong
-      make_color(255, 0, 255),
-      make_color(255, 0, 255),
-  };
+  core::Mesh cube_mesh = core::MeshLoader::load_obj(
+      "../obj/african_head/african_head.obj", 0xFF80FF);
 
   platform::Sdl_Texture fb_texture;
   if (!fb_texture.create(app.renderer(), fb_width, fb_height)) {

@@ -27,6 +27,32 @@ Mesh Mesh::create_cube() {
       0, 4, 5, 0, 5, 1, // 底面（-Y）
       3, 2, 6, 3, 6, 7, // 顶面（+Y）
   };
+  // use(main)
+  // cube_mesh.triangle_colors = {
+  //     // (-z) red
+  //     make_color(255, 0, 0),
+  //     make_color(255, 0, 0),
+  //
+  //     // (+z) green
+  //     make_color(0, 255, 0),
+  //     make_color(0, 255, 0),
+  //
+  //     // (-x) blue
+  //     make_color(0, 0, 255),
+  //     make_color(0, 0, 255),
+  //
+  //     // (+x) yellow
+  //     make_color(255, 255, 0),
+  //     make_color(255, 255, 0),
+  //
+  //     // (-y) qing
+  //     make_color(0, 255, 255),
+  //     make_color(0, 255, 255),
+  //
+  //     // (+y) yang_hong
+  //     make_color(255, 0, 255),
+  //     make_color(255, 0, 255),
+  // };
 
   // 调试输出
   std::cout << "[Mesh:: create_cube] positions. size() = "

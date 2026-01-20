@@ -4,6 +4,8 @@
 #include "core/mesh_loarder.h"
 #include "core/rasterizer.h"
 #include "core/renderer.h"
+#include "core/texture.h"
+#include "core/texture_loarder.h"
 #include "platform/input.h"
 #include "platform/sdl_app.h"
 #include "platform/sdl_texture.h"
@@ -37,7 +39,13 @@ int main() {
   core::Renderer renderer(&rasterizer, fb_width, fb_height);
 
   core::Mesh cube_mesh = core::MeshLoader::load_obj(
-      "../obj/african_head/african_head.obj", 0xFF80FF);
+      "../obj/diablo3_pose/diablo3_pose.obj", 0xFF80FF);
+  core::Texture diffuse_texture;
+  if (!core::TextureLoader::load("../obj/diablo3_pose/diablo3_pose_diffuse.tga",
+                                 diffuse_texture)) {
+    std::cerr << "Faild to load diffuse texture!\n";
+    return 1;
+  }
 
   platform::Sdl_Texture fb_texture;
   if (!fb_texture.create(app.renderer(), fb_width, fb_height)) {
@@ -123,7 +131,7 @@ int main() {
     mat4 model(1.f);
     mat4 mvp = camera.mvp_matrix(model);
 
-    renderer.draw_mesh(cube_mesh, mvp);
+    renderer.draw_mesh(cube_mesh, mvp, &diffuse_texture);
 
     fb_texture.update(rasterizer.frame_buffer());
 

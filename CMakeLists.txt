@@ -41,9 +41,9 @@ add_library(core STATIC
 	${CMAKE_SOURCE_DIR}/src/core/camera.cpp
 	${CMAKE_SOURCE_DIR}/src/core/renderer.cpp
 	${CMAKE_SOURCE_DIR}/src/core/mesh.cpp
-	${CMAKE_SOURCE_DIR}/src/core/mesh_loarder.cpp
+	${CMAKE_SOURCE_DIR}/src/core/mesh_loader.cpp
 	${CMAKE_SOURCE_DIR}/src/core/texture.cpp
-	${CMAKE_SOURCE_DIR}/src/core/texture_loarder.cpp
+	${CMAKE_SOURCE_DIR}/src/core/texture_loader.cpp
 
 )
 target_include_directories(core PUBLIC

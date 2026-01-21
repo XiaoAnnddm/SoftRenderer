@@ -34,8 +34,8 @@ Color Texture::get_pixel(int x, int y) const {
   int idx = (y * m_width + x) * m_channels;
 
   unsigned char r = m_data[idx];
-  unsigned char g = m_data[idx];
-  unsigned char b = m_data[idx];
+  unsigned char g = m_data[idx + 1];
+  unsigned char b = m_data[idx + 2];
   unsigned char a = (m_channels == 4) ? m_data[idx + 3] : 255;
 
   return (a << 24) | (r << 16) | (g << 8) | b;

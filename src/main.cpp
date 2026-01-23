@@ -14,6 +14,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+#include "app_state.h"
 #include "color.h"
 
 int main() {
@@ -22,7 +23,7 @@ int main() {
     return 1;
   }
 
-  ui::UiState ui_state;
+  AppState app_state;
 
   ui::init(app.window(), app.renderer());
 
@@ -115,6 +116,34 @@ int main() {
       }
     }
 
+    // FOV
+    if (camera.fov() != app_state.fov) {
+      camera.set_fov(app_state.fov);
+    }
+
+    // projection
+    core::ProjectionType core_proj =
+        (app_state.projection_type == ProjectionType::Perspective)
+            ? core::ProjectionType::Perspective
+            : core::ProjectionType::Orthographic;
+    if (camera.projection_type() != core_proj) {
+      camera.set_projection_type(core_proj);
+    }
+
+    // depth test
+    rasterizer.set_depth_test_enabled(app_state.depth_test_enabled);
+
+    if (app_state.request_camera_reset) {
+      camera.reset();
+      app_state.request_camera_reset = false;
+    }
+
+    // camera && ui
+    app_state.camera_position = camera.postion();
+    app_state.camera_pitch = camera.pitch();
+    app_state.camera_yaw = camera.yaw();
+    app_state.fov = camera.fov();
+
     rasterizer.clear();
 
     // fill background - gray
@@ -136,7 +165,7 @@ int main() {
 
     // ui
     ui::begin_frame();
-    ui::draw(fb_texture.texture(), ui_state, &camera, &rasterizer);
+    ui::draw(fb_texture.texture(), app_state);
     ui::end_frame(app.renderer());
 
     app.end_frame();

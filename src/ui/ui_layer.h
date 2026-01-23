@@ -1,10 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 
-namespace core {
-class Camera;
-class Rasterizer;
-} // namespace core
+struct AppState;
 
 namespace ui {
 
@@ -16,8 +13,7 @@ bool init(SDL_Window *window, SDL_Renderer *renderer);
 void shutdown();
 
 void begin_frame();
-void draw(SDL_Texture *framebuffer_tex, UiState &state, core::Camera *camera,
-          core::Rasterizer *rasterizer);
+void draw(SDL_Texture *framebuffer_tex, AppState &state);
 void end_frame(SDL_Renderer *renderer);
 
 void process_event(const SDL_Event &e);

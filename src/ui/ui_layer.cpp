@@ -1,7 +1,6 @@
 #include "ui_layer.h"
 
-#include "../core/camera.h"
-#include "../core/rasterizer.h"
+#include "../app_state.h"
 
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
@@ -54,8 +53,7 @@ void begin_frame() {
   ImGui::NewFrame();
 }
 
-void draw(SDL_Texture *framebuffer_tex, UiState &state, core::Camera *camera,
-          core::Rasterizer *rasterizer) {
+void draw(SDL_Texture *framebuffer_tex, AppState &state) {
   ImGuiIO &io = ImGui::GetIO();
   io.FontGlobalScale = 2.f;
 
@@ -118,62 +116,57 @@ void draw(SDL_Texture *framebuffer_tex, UiState &state, core::Camera *camera,
     ImGui::Text("Frame Time: %.3f ms", 1000.f / io.Framerate);
   }
   // camera
-  if (camera &&
-      ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen)) {
-    const Vec3 &pos = camera->postion();
+  if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen)) {
     ImGui::Text("Position:");
     ImGui::Indent();
-    ImGui::Text("X: %.2f", pos.x);
-    ImGui::Text("Y: %.2f", pos.y);
-    ImGui::Text("Z: %.2f", pos.z);
+    ImGui::Text("X: %.2f", state.camera_position.x);
+    ImGui::Text("Y: %.2f", state.camera_position.y);
+    ImGui::Text("Z: %.2f", state.camera_position.z);
     ImGui::Unindent();
 
     ImGui::Separator();
 
     ImGui::Text("Rotation:");
     ImGui::Indent();
-    ImGui::Text("Pitch: %.1f°", camera->pitch());
-    ImGui::Text("Yaw: %.1f°", camera->yaw());
+    ImGui::Text("Pitch: %.1f°", state.camera_pitch);
+    ImGui::Text("Yaw: %.1f°", state.camera_yaw);
     ImGui::Unindent();
 
     ImGui::Separator();
 
-    float fov = camera->fov();
-    if (ImGui::SliderFloat("FOV", &fov, 10.f, 90.f, "%.1f°")) {
-      camera->set_fov(fov);
-    }
+    // fov
+    ImGui::SliderFloat("FOV", &state.fov, 10.f, 90.f, "%.1f°");
 
     ImGui::Separator();
 
     if (ImGui::Button("Reset Camera", ImVec2(-1, 0))) {
-      camera->reset();
+      state.request_camera_reset = true;
     }
   }
-  // rasterizer
-  if (camera && rasterizer &&
-      ImGui::CollapsingHeader("Render Settings",
+  // render settings
+  if (ImGui::CollapsingHeader("Render Settings",
                               ImGuiTreeNodeFlags_DefaultOpen)) {
     const char *projection_types[] = {"Perspective", "Orthographic"};
     int current_projection =
-        (camera->projection_type() == core::ProjectionType::Perspective) ? 0
-                                                                         : 1;
+        (state.projection_type == ProjectionType::Perspective) ? 0 : 1;
     if (ImGui::Combo("Projection", &current_projection, projection_types, 2)) {
-      if (current_projection == 0) {
-        camera->set_projection_type(core::ProjectionType::Perspective);
-      } else {
-        camera->set_projection_type(core::ProjectionType::Orthographic);
-      }
+      state.projection_type = (current_projection == 0)
+                                  ? ProjectionType::Perspective
+                                  : ProjectionType::Orthographic;
     }
 
     ImGui::Separator();
 
-    bool depth_test = state.depth_test_enabled;
-    if (ImGui::Checkbox("Depth Test", &depth_test)) {
-      state.depth_test_enabled = depth_test;
-      rasterizer->set_depth_test_enabled(depth_test);
+    const char *render_modes[] = {"Solid", "Wireframe", "Vertex"};
+    int current_mode = static_cast<int>(state.render_mode);
+    if (ImGui::Combo("Render Mode", &current_mode, render_modes, 3)) {
+      state.render_mode = static_cast<RenderMode>(current_mode);
     }
 
-    if (!depth_test) {
+    ImGui::Separator();
+
+    ImGui::Checkbox("Depth Test", &state.depth_test_enabled);
+    if (!state.depth_test_enabled) {
       ImGui::SameLine();
       ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "(!)");
       if (ImGui::IsItemHovered()) {

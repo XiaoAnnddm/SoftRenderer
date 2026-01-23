@@ -1,6 +1,5 @@
 #include "app.h"
 
-#include "camera.h"
 #include "color.h"
 
 #include "core/mesh_loader.h"
@@ -56,6 +55,7 @@ bool App::handle_events() {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     ui::process_event(e);
+    m_input.process_event(e);
 
     if (e.type == SDL_QUIT) {
       m_running = false;

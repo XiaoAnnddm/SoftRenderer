@@ -12,13 +12,9 @@
 #include "ui/ui_layer.h"
 
 #include <SDL2/SDL.h>
-
 #include <iostream>
 
-// use for BGRA - SDL format
-constexpr Color make_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
-  return (a << 24) | (r << 16) | (g << 8) | b;
-}
+#include "color.h"
 
 int main() {
   platform::SdlApp app;
@@ -122,7 +118,7 @@ int main() {
     rasterizer.clear();
 
     // fill background - gray
-    Color bg_color = make_color(30, 30, 30);
+    Color bg_color = colors::Gray;
     for (auto &pixel : rasterizer.frame_buffer()) {
       pixel = bg_color;
     }
